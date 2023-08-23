@@ -1,8 +1,8 @@
 DOCKER_VOLUMES = \
 	--volume="$(shell pwd)/src":"/ws":rw \
 	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-	--volume="${HOME}/.Xauthority:/root/.Xauthority:rw" 
-
+	--volume="${HOME}/.Xauthority:/root/.Xauthority:rw" \
+	--user=$(id -u):$(id -g) \
 
 DOCKER_ENV_VARS = \
 	--env="DISPLAY" \
@@ -30,18 +30,17 @@ term:
 .PHONY: norm
 norm:
 	@sudo xhost +
-	@docker run -it --net=host ${DOCKER_ARGS} dev bash -c "cd src/statistic/normal && python3 norm.py"
+	@docker run -it --net=host ${DOCKER_ARGS} dev bash -c "cd statistic/normal && python3 norm.py"
 
 # === Sampling ===
 .PHONY: sample
 sample:
-	@docker run -it--net=host ${DOCKER_ARGS} dev bash -c "cd src/statistic/sampling && python3 sample.py"
-
+	@docker run -it --net=host ${DOCKER_ARGS} dev bash -c "cd statistic/sampling && python3 sample.py"
 
 # ========= VIBRATION =========
 
 # === Frequency Analysis ===
 .PHONY: freq
 freq:
-	@docker run -it--net=host ${DOCKER_ARGS} dev bash -c "cd src/vibration/frequency && python3 main.py"
+	@docker run -it --net=host ${DOCKER_ARGS} dev bash -c "cd vibration/frequency && python3 main.py"
 
