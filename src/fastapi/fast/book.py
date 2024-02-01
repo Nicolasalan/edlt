@@ -71,7 +71,7 @@ async def read_book(book_id: int = Path(..., gt=0)):# caso escolha um id menor q
     raise HTTPException(status_code=404, detail='Item não encontrado')
 
 # fetch a book by rating
-@app.get("/books/")
+@app.get("/books/", status_code=status.HTTP_200_OK)
 async def read_book_by_rating(rating: int = Query(None, gt=0, lt=6)):
     books_return = []
     for book in BOOKS:
